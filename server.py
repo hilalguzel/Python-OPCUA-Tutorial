@@ -18,19 +18,26 @@ if __name__ == "__main__":
 
     # Add object and variable
     myobj = objects.add_object(idx, "MyObject")
-    myvar = myobj.add_variable(idx, "MyVariable", 6.7)
-    myvar.set_writable()   #Set MyVariable to be Writable by clients
 
+    # Add variables
+    temp_var = myobj.add_variable(idx, "Temperature", 25.0)
+    pressure_var = myobj.add_variable(idx, "Pressure", 101.3)
+    time_var = myobj.add_variable(idx, "Time", time.time())
 
+    # Set all variables to be writable by clients
+    temp_var.set_writable()
+    pressure_var.set_writable()
+    time_var.set_writable()
+    
     # Start Server
     server.start()
 
+    print("Server is running, variables are updating...")
+
     try:
-        count = 0
         while True:
             time.sleep(1)
-            count += 0.1
-            myvar.set_value(count)
+            time_var.set_value(time.time())
     finally:
         #close connection, remove subscription, etc
         server.stop()
